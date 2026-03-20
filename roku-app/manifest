@@ -1,0 +1,10 @@
+title=Thayson & Thayla IPTV
+major_version=1
+minor_version=0
+build_version=1
+ui_resolutions=fhd
+mm_icon_focus_fhd=pkg:/images/logo_focus.png
+mm_icon_side_fhd=pkg:/images/logo_side.png
+splash_screen_fhd=pkg:/images/splash.png
+splash_color=#0a0a0a
+splash_min_time=3000

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+  <children>
+    <!-- Fundo 3D Estilizado -->
+    <Rectangle id="background" width="1920" height="1080" color="0x0a0a0a" />
+    
+    <!-- Logo Thayson & Thayla -->
+    <Group id="logoGroup" translation="[960, 300]">
+        <Label id="logoThayson" text="THAYSON" font="font:LargeBoldSystemFont" color="0xff007f" translation="[-150, 0]" />
+        <Label id="logoAnd" text="&amp;" font="font:MediumBoldSystemFont" color="0xffffff" translation="[0, 50]" />
+        <Label id="logoThayla" text="THAYLA" font="font:LargeBoldSystemFont" color="0x007fff" translation="[-120, 100]" />
+    </Group>
+
+    <!-- Campos de Login -->
+    <Group id="loginForm" translation="[710, 500]">
+        <Label text="USUARIO" translation="[0, 0]" font="font:SmallSystemFont" color="0x888888" />
+        <Rectangle width="500" height="60" color="0x222222" translation="[0, 30]" />
+        
+        <Label text="SENHA" translation="[0, 120]" font="font:SmallSystemFont" color="0x888888" />
+        <Rectangle width="500" height="60" color="0x222222" translation="[0, 150]" />
+        
+        <Label text="HOST" translation="[0, 240]" font="font:SmallSystemFont" color="0x888888" />
+        <Rectangle width="500" height="60" color="0x222222" translation="[0, 270]" />
+        
+        <!-- Botões -->
+        <Rectangle id="btnContinue" width="240" height="80" color="0xff007f" translation="[260, 380]">
+            <Label text="CONTINUAR" translation="[45, 25]" font="font:SmallBoldSystemFont" />
+        </Rectangle>
+        <Rectangle id="btnCancel" width="240" height="80" color="0x444444" translation="[0, 380]">
+            <Label text="CANCELAR" translation="[55, 25]" font="font:SmallBoldSystemFont" />
+        </Rectangle>
+    </Group>
+
+    <!-- Player de Vídeo (Oculto inicialmente) -->
+    <Video id="videoPlayer" width="1920" height="1080" visible="false" />
+  </children>
+
+  <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+</component>
