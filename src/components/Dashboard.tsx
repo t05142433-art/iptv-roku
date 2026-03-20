@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { Tv, Film, PlayCircle, Settings, Search, LogOut, Clock, ChevronRight, Star, Info } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Tv, Film, PlayCircle, Settings, Search, LogOut, Clock, ChevronRight, Star, Info, X, Globe, Palette, Smartphone } from 'lucide-react';
 import { Logo } from './Logo';
 import { iptvService, Category, Stream, Series } from '../services/iptvService';
 import { VideoPlayer } from './VideoPlayer';

@@ -60,49 +60,56 @@ export class IPTVService {
     return this.config.host.endsWith('/') ? this.config.host : `${this.config.host}/`;
   }
 
+  private async fetch(url: string) {
+    const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+    const response = await axios.get(proxyUrl);
+    return response.data;
+  }
+
   async authenticate() {
     if (!this.config) return null;
     const url = `${this.baseUrl}player_api.php?username=${this.config.user}&password=${this.config.pass}`;
-    const response = await axios.get(url);
-    return response.data;
+    return this.fetch(url);
   }
 
   async getCategories(action: 'get_live_categories' | 'get_vod_categories' | 'get_series_categories') {
-    const url = `${this.baseUrl}player_api.php?username=${this.config?.user}&password=${this.config?.pass}&action=${action}`;
-    const response = await axios.get(url);
-    return response.data as Category[];
+    if (!this.config) return [];
+    const url = `${this.baseUrl}player_api.php?username=${this.config.user}&password=${this.config.pass}&action=${action}`;
+    return this.fetch(url);
   }
 
   async getStreams(action: 'get_live_streams' | 'get_vod_streams' | 'get_series', categoryId?: string) {
-    let url = `${this.baseUrl}player_api.php?username=${this.config?.user}&password=${this.config?.pass}&action=${action}`;
+    if (!this.config) return [];
+    let url = `${this.baseUrl}player_api.php?username=${this.config.user}&password=${this.config.pass}&action=${action}`;
     if (categoryId) {
       url += `&category_id=${categoryId}`;
     }
-    const response = await axios.get(url);
-    return response.data;
+    return this.fetch(url);
   }
 
   async getSeriesInfo(seriesId: number) {
-    const url = `${this.baseUrl}player_api.php?username=${this.config?.user}&password=${this.config?.pass}&action=get_series_info&series_id=${seriesId}`;
-    const response = await axios.get(url);
-    return response.data;
+    if (!this.config) return null;
+    const url = `${this.baseUrl}player_api.php?username=${this.config.user}&password=${this.config.pass}&action=get_series_info&series_id=${seriesId}`;
+    return this.fetch(url);
   }
 
   async getVodInfo(vodId: number) {
-    const url = `${this.baseUrl}player_api.php?username=${this.config?.user}&password=${this.config?.pass}&action=get_vod_info&vod_id=${vodId}`;
-    const response = await axios.get(url);
-    return response.data;
+    if (!this.config) return null;
+    const url = `${this.baseUrl}player_api.php?username=${this.config.user}&password=${this.config.pass}&action=get_vod_info&vod_id=${vodId}`;
+    return this.fetch(url);
   }
 
   getStreamUrl(type: 'live' | 'movie' | 'series', streamId: number | string, extension: string = 'ts') {
     if (!this.config) return '';
+    let url = '';
     if (type === 'live') {
-      return `${this.baseUrl}live/${this.config.user}/${this.config.pass}/${streamId}.${extension}`;
+      url = `${this.baseUrl}live/${this.config.user}/${this.config.pass}/${streamId}.${extension}`;
     } else if (type === 'movie') {
-      return `${this.baseUrl}movie/${this.config.user}/${this.config.pass}/${streamId}.${extension}`;
+      url = `${this.baseUrl}movie/${this.config.user}/${this.config.pass}/${streamId}.${extension}`;
     } else {
-      return `${this.baseUrl}series/${this.config.user}/${this.config.pass}/${streamId}.${extension}`;
+      url = `${this.baseUrl}series/${this.config.user}/${this.config.pass}/${streamId}.${extension}`;
     }
+    return `/api/proxy?url=${encodeURIComponent(url)}`;
   }
 }
 

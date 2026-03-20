@@ -2,7 +2,7 @@ sub init()
     m.videoPlayer = m.top.findNode("videoPlayer")
     m.loadingGroup = m.top.findNode("loadingGroup")
     m.loadingBar = m.top.findNode("loadingBar")
-    m.loginForm = m.top.findNode("loginForm")
+    m.loginContainer = m.top.findNode("loginContainer")
     m.keyboard = m.top.findNode("keyboard")
     m.btnContinue = m.top.findNode("btnContinue")
     m.btnCancel = m.top.findNode("btnCancel")
@@ -12,25 +12,33 @@ sub init()
     m.valUser = m.top.findNode("valUser")
     m.valPass = m.top.findNode("valPass")
     m.valHost = m.top.findNode("valHost")
+    
+    m.connectingGroup = m.top.findNode("connectingGroup")
+    m.connectingBar = m.top.findNode("connectingBar")
+    m.connHost = m.top.findNode("connHost")
+    m.connUser = m.top.findNode("connUser")
+    m.connPass = m.top.findNode("connPass")
+    m.connStatus = m.top.findNode("connStatus")
+    
     m.dashboard = m.top.findNode("dashboard")
     m.categoryList = m.top.findNode("categoryList")
     m.streamList = m.top.findNode("streamList")
     
     m.top.setFocus(true)
     
-    ' Loading Animation
+    ' Initial Loading
     m.loadingTimer = m.top.createChild("Timer")
-    m.loadingTimer.duration = 0.03
+    m.loadingTimer.duration = 0.02
     m.loadingTimer.repeat = true
     m.loadingTimer.observeField("fire", "updateLoading")
     m.loadingTimer.control = "start"
     m.progress = 0
     
-    ' Focus management
     m.focusIndex = 0
     m.focusNodes = [m.rectUser, m.rectPass, m.rectHost, m.btnCancel, m.btnContinue]
     m.isKeyboardActive = false
     m.isDashboardActive = false
+    m.isConnecting = false
     
     m.keyboard.observeField("text", "onKeyboardTextChange")
     m.categoryList.observeField("itemFocused", "onCategoryFocused")
@@ -44,7 +52,7 @@ sub updateLoading()
     else
         m.loadingTimer.control = "stop"
         m.loadingGroup.visible = false
-        m.loginForm.visible = true
+        m.loginContainer.visible = true
         m.focusNodes[m.focusIndex].setFocus(true)
         updateFocusVisuals()
     end if
@@ -68,6 +76,13 @@ sub onKeyboardTextChange()
     if m.focusIndex = 0 then m.valUser.text = m.keyboard.text
     if m.focusIndex = 1 then m.valPass.text = m.keyboard.text
     if m.focusIndex = 2 then m.valHost.text = m.keyboard.text
+    
+    ' Reset color if text entered
+    if m.keyboard.text <> ""
+        if m.focusIndex = 0 then m.valUser.color = "0xffffff"
+        if m.focusIndex = 1 then m.valPass.color = "0xffffff"
+        if m.focusIndex = 2 then m.valHost.color = "0xffffff"
+    end if
 end sub
 
 function onKeyEvent(key as String, press as Boolean) as Boolean
@@ -92,7 +107,7 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
                     return true
                 end if
                 m.dashboard.visible = false
-                m.loginForm.visible = true
+                m.loginContainer.visible = true
                 m.isDashboardActive = false
                 m.focusNodes[m.focusIndex].setFocus(true)
                 return true
@@ -122,18 +137,57 @@ end function
 sub handleAction()
     node = m.focusNodes[m.focusIndex]
     if node.id = "btnContinue"
-        connectIPTV()
+        startConnectionAnimation()
     else if node.id = "btnCancel"
-        ' Reset
+        ' FECHAR O APP (CANCELAR)
+        m.top.close = true
     else
         ' Open Keyboard
         m.keyboard.text = ""
-        if node.id = "rectUser" then m.keyboard.text = m.valUser.text
-        if node.id = "rectPass" then m.keyboard.text = m.valPass.text
-        if node.id = "rectHost" then m.keyboard.text = m.valHost.text
+        currentVal = ""
+        if node.id = "rectUser" then currentVal = m.valUser.text
+        if node.id = "rectPass" then currentVal = m.valPass.text
+        if node.id = "rectHost" then currentVal = m.valHost.text
+        
+        if currentVal.instr("Digite") = -1 and currentVal.instr("http") = -1
+            m.keyboard.text = currentVal
+        end if
+        
         m.keyboard.visible = true
         m.keyboard.setFocus(true)
         m.isKeyboardActive = true
+    end if
+end sub
+
+sub startConnectionAnimation()
+    m.loginContainer.visible = false
+    m.connectingGroup.visible = true
+    m.isConnecting = true
+    
+    m.connHost.text = "HOST: " + m.valHost.text
+    m.connUser.text = "USER: " + m.valUser.text
+    m.connPass.text = "PASS: ********"
+    
+    m.connProgress = 0
+    m.connTimer = m.top.createChild("Timer")
+    m.connTimer.duration = 0.05
+    m.connTimer.repeat = true
+    m.connTimer.observeField("fire", "updateConnProgress")
+    m.connTimer.control = "start"
+end sub
+
+sub updateConnProgress()
+    m.connProgress = m.connProgress + 2
+    m.connectingBar.width = m.connProgress * 6
+    
+    if m.connProgress = 20 then m.connStatus.text = "Validando Host..."
+    if m.connProgress = 40 then m.connStatus.text = "Autenticando Usuário..."
+    if m.connProgress = 60 then m.connStatus.text = "Baixando Lista de Canais..."
+    if m.connProgress = 80 then m.connStatus.text = "Preparando Interface 3D..."
+    
+    if m.connProgress >= 100
+        m.connTimer.control = "stop"
+        connectIPTV()
     end if
 end sub
 
@@ -148,11 +202,18 @@ sub connectIPTV()
     if response <> ""
         json = ParseJson(response)
         if json <> invalid and json.user_info <> invalid
-            m.loginForm.visible = false
+            m.connectingGroup.visible = false
             m.dashboard.visible = true
             m.isDashboardActive = true
             loadCategories()
+        else
+            m.connStatus.text = "ERRO: Credenciais Inválidas!"
+            m.connStatus.color = "0xff0000"
+            ' Voltar após erro
         end if
+    else
+        m.connStatus.text = "ERRO: Servidor Offline!"
+        m.connStatus.color = "0xff0000"
     end if
 end sub
 
@@ -200,7 +261,7 @@ sub onStreamSelected()
 end sub
 
 sub playStream(streamId)
-    ' MPEG-TS Stream URL
+    ' MPEG-TS Stream URL (mgets)
     url = m.valHost.text + "/live/" + m.valUser.text + "/" + m.valPass.text + "/" + streamId.ToStr() + ".ts"
     
     content = CreateObject("roSGNode", "ContentNode")

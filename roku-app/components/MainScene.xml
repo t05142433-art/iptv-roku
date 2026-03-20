@@ -1,66 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="MainScene" extends="Scene">
   <children>
-    <!-- Fundo Profissional -->
+    <!-- Fundo Profissional com Blur -->
     <Poster id="bgImage" width="1920" height="1080" uri="https://picsum.photos/seed/iptv/1920/1080?blur=5" opacity="0.4" />
-    <Rectangle id="backgroundOverlay" width="1920" height="1080" color="0x000000" opacity="0.7" />
+    <Rectangle id="backgroundOverlay" width="1920" height="1080" color="0x000000" opacity="0.8" />
     
     <!-- Logo 3D Ultra Estilizada -->
-    <Group id="logoGroup" translation="[960, 250]">
-        <!-- Camadas de profundidade para efeito 3D -->
+    <Group id="logoGroup" translation="[960, 200]">
         <Label text="THAYSON" font="font:LargeBoldSystemFont" color="0x000000" translation="[-142, 8]" opacity="0.6" />
-        <Label text="THAYSON" font="font:LargeBoldSystemFont" color="0x33001a" translation="[-146, 4]" />
         <Label id="logoThayson" text="THAYSON" font="font:LargeBoldSystemFont" color="0xff007f" translation="[-150, 0]" />
-        
         <Label text="&amp;" font="font:MediumBoldSystemFont" color="0xffffff" translation="[0, 60]" />
-        
         <Label text="THAYLA" font="font:LargeBoldSystemFont" color="0x000000" translation="[-112, 108]" opacity="0.6" />
-        <Label text="THAYLA" font="font:LargeBoldSystemFont" color="0x001a33" translation="[-116, 104]" />
         <Label id="logoThayla" text="THAYLA" font="font:LargeBoldSystemFont" color="0x007fff" translation="[-120, 100]" />
     </Group>
 
-    <!-- Formulário de Login com Teclado -->
-    <Group id="loginForm" translation="[460, 450]" visible="false">
+    <!-- Container Principal do Login -->
+    <Group id="loginContainer" translation="[200, 400]" visible="false">
+        <!-- Área de Inputs (Esquerda) -->
         <Group id="inputArea" translation="[0, 0]">
             <Label text="USUÁRIO" translation="[0, 0]" font="font:SmallBoldSystemFont" color="0xff007f" />
-            <Rectangle id="rectUser" width="400" height="60" color="0x222222" translation="[0, 40]" focusable="true" />
-            <Label id="valUser" text="" translation="[15, 50]" font="font:SmallSystemFont" color="0xffffff" />
+            <Rectangle id="rectUser" width="450" height="70" color="0x222222" translation="[0, 40]" focusable="true" />
+            <Label id="valUser" text="Digite o usuário..." translation="[20, 55]" font="font:SmallSystemFont" color="0x666666" />
 
-            <Label text="SENHA" translation="[0, 130]" font="font:SmallBoldSystemFont" color="0xff007f" />
-            <Rectangle id="rectPass" width="400" height="60" color="0x222222" translation="[0, 170]" focusable="true" />
-            <Label id="valPass" text="" translation="[15, 180]" font="font:SmallSystemFont" color="0xffffff" />
+            <Label text="SENHA" translation="[0, 140]" font="font:SmallBoldSystemFont" color="0xff007f" />
+            <Rectangle id="rectPass" width="450" height="70" color="0x222222" translation="[0, 180]" focusable="true" />
+            <Label id="valPass" text="Digite a senha..." translation="[20, 195]" font="font:SmallSystemFont" color="0x666666" />
 
-            <Label text="HOST (URL)" translation="[0, 260]" font="font:SmallBoldSystemFont" color="0x007fff" />
-            <Rectangle id="rectHost" width="400" height="60" color="0x222222" translation="[0, 300]" focusable="true" />
-            <Label id="valHost" text="" translation="[15, 310]" font="font:SmallSystemFont" color="0xffffff" />
+            <Label text="URL IPTV (HOST)" translation="[0, 280]" font="font:SmallBoldSystemFont" color="0x007fff" />
+            <Rectangle id="rectHost" width="450" height="70" color="0x222222" translation="[0, 320]" focusable="true" />
+            <Label id="valHost" text="http://..." translation="[20, 335]" font="font:SmallSystemFont" color="0x666666" />
             
-            <Group id="buttonGroup" translation="[0, 420]">
-                <Rectangle id="btnCancel" width="190" height="70" color="0x444444" translation="[0, 0]" focusable="true">
-                    <Label text="CANCELAR" translation="[45, 20]" font="font:SmallBoldSystemFont" />
+            <Group id="buttonGroup" translation="[0, 450]">
+                <Rectangle id="btnCancel" width="210" height="80" color="0x444444" translation="[0, 0]" focusable="true">
+                    <Label text="SAIR" translation="[75, 25]" font="font:SmallBoldSystemFont" />
                 </Rectangle>
-                <Rectangle id="btnContinue" width="190" height="70" color="0xff007f" translation="[210, 0]" focusable="true">
-                    <Label text="ENTRAR" translation="[60, 20]" font="font:SmallBoldSystemFont" />
+                <Rectangle id="btnContinue" width="210" height="80" color="0xff007f" translation="[240, 0]" focusable="true">
+                    <Label text="ENTRAR" translation="[65, 25]" font="font:SmallBoldSystemFont" />
                 </Rectangle>
             </Group>
         </Group>
 
-        <!-- Teclado Nativo Roku -->
-        <Keyboard id="keyboard" translation="[500, 0]" visible="false" />
+        <!-- Teclado Nativo (Direita) -->
+        <Keyboard id="keyboard" translation="[600, 0]" visible="false" />
+    </Group>
+
+    <!-- Animação de Conexão 3D -->
+    <Group id="connectingGroup" translation="[960, 600]" visible="false">
+        <Rectangle width="800" height="400" color="0x111111" translation="[-400, -200]" opacity="0.9" />
+        <Label id="connectingTitle" text="CONECTANDO..." font="font:MediumBoldSystemFont" color="0xff007f" translation="[-150, -150]" />
+        
+        <Group id="connectingDetails" translation="[-350, -50]">
+            <Label id="connHost" text="HOST: ---" font="font:SmallSystemFont" color="0x007fff" translation="[0, 0]" />
+            <Label id="connUser" text="USER: ---" font="font:SmallSystemFont" color="0xffffff" translation="[0, 50]" />
+            <Label id="connPass" text="PASS: *****" font="font:SmallSystemFont" color="0xffffff" translation="[0, 100]" />
+        </Group>
+
+        <Rectangle width="600" height="10" color="0x333333" translation="[-300, 100]" />
+        <Rectangle id="connectingBar" width="0" height="10" color="0xff007f" translation="[-300, 100]" />
+        <Label id="connStatus" text="Autenticando no servidor..." font="font:SmallSystemFont" color="0x888888" translation="[-150, 130]" />
     </Group>
 
     <!-- Dashboard de Canais -->
     <Group id="dashboard" visible="false">
-        <Rectangle width="1920" height="100" color="0x111111" />
-        <Label text="THAYSON &amp; THAYLA IPTV - CANAIS" translation="[50, 30]" font="font:MediumBoldSystemFont" color="0xff007f" />
+        <Rectangle width="1920" height="120" color="0x111111" />
+        <Label text="THAYSON &amp; THAYLA IPTV" translation="[80, 35]" font="font:LargeBoldSystemFont" color="0xff007f" />
         
-        <LabelList id="categoryList" translation="[50, 150]" itemSize="[400, 60]" />
-        <LabelList id="streamList" translation="[500, 150]" itemSize="[1300, 60]" />
-    </Group>
-
-    <!-- Loading -->
-    <Group id="loadingGroup" translation="[960, 850]">
-        <Rectangle width="600" height="6" color="0x333333" translation="[-300, 0]" />
-        <Rectangle id="loadingBar" width="0" height="6" color="0xff007f" translation="[-300, 0]" />
+        <LabelList id="categoryList" translation="[80, 180]" itemSize="[450, 70]" />
+        <LabelList id="streamList" translation="[580, 180]" itemSize="[1260, 70]" />
     </Group>
 
     <Video id="videoPlayer" width="1920" height="1080" visible="false" />
