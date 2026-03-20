@@ -20,7 +20,27 @@ export const LoadingScreen: React.FC<{ onComplete: () => void }> = ({ onComplete
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 bg-bg-dark flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50 overflow-hidden">
+      {/* Background Animated Gradients */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-[#ff007f]/20 blur-[120px] rounded-full"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-[#007fff]/20 blur-[120px] rounded-full"
+        />
+      </div>
+
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -29,15 +49,15 @@ export const LoadingScreen: React.FC<{ onComplete: () => void }> = ({ onComplete
         <Logo size="xl" />
       </motion.div>
       
-      <div className="mt-12 w-64 h-1 bg-white/10 rounded-full overflow-hidden relative">
+      <div className="mt-16 w-80 h-2 bg-white/5 rounded-full overflow-hidden glass-3d relative">
         <motion.div 
-          className="h-full bg-gradient-to-r from-primary to-secondary"
+          className="h-full bg-gradient-to-r from-[#ff007f] via-[#ff007f] to-[#007fff] shadow-[0_0_20px_rgba(255,0,127,0.6)]"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
         />
       </div>
-      <p className="mt-4 text-white/50 font-mono text-sm tracking-widest uppercase">
-        Carregando Experiência 3D... {progress}%
+      <p className="mt-6 text-white/40 font-mono text-xs tracking-[0.3em] uppercase">
+        Iniciando Experiência 3D... {progress}%
       </p>
     </div>
   );
