@@ -1,37 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="MainScene" extends="Scene">
   <children>
-    <!-- Fundo 3D Estilizado -->
+    <!-- Background with Gradient Effect -->
     <Rectangle id="background" width="1920" height="1080" color="0x0a0a0a" />
     
-    <!-- Logo Thayson & Thayla -->
+    <!-- 3D Logo Container -->
     <Group id="logoGroup" translation="[960, 300]">
+        <!-- Shadow Layer for 3D effect -->
+        <Label id="logoThaysonShadow" text="THAYSON" font="font:LargeBoldSystemFont" color="0x000000" translation="[-145, 5]" opacity="0.5" />
         <Label id="logoThayson" text="THAYSON" font="font:LargeBoldSystemFont" color="0xff007f" translation="[-150, 0]" />
-        <Label id="logoAnd" text="&amp;" font="font:MediumBoldSystemFont" color="0xffffff" translation="[0, 50]" />
+        
+        <Label id="logoAnd" text="&amp;" font="font:MediumBoldSystemFont" color="0xffffff" translation="[0, 60]" />
+        
+        <Label id="logoThaylaShadow" text="THAYLA" font="font:LargeBoldSystemFont" color="0x000000" translation="[-115, 105]" opacity="0.5" />
         <Label id="logoThayla" text="THAYLA" font="font:LargeBoldSystemFont" color="0x007fff" translation="[-120, 100]" />
-    </Group>
-
-    <!-- Campos de Login -->
-    <Group id="loginForm" translation="[710, 500]">
-        <Label text="USUARIO" translation="[0, 0]" font="font:SmallSystemFont" color="0x888888" />
-        <Rectangle width="500" height="60" color="0x222222" translation="[0, 30]" />
         
-        <Label text="SENHA" translation="[0, 120]" font="font:SmallSystemFont" color="0x888888" />
-        <Rectangle width="500" height="60" color="0x222222" translation="[0, 150]" />
-        
-        <Label text="HOST" translation="[0, 240]" font="font:SmallSystemFont" color="0x888888" />
-        <Rectangle width="500" height="60" color="0x222222" translation="[0, 270]" />
-        
-        <!-- Botões -->
-        <Rectangle id="btnContinue" width="240" height="80" color="0xff007f" translation="[260, 380]">
-            <Label text="CONTINUAR" translation="[45, 25]" font="font:SmallBoldSystemFont" />
-        </Rectangle>
-        <Rectangle id="btnCancel" width="240" height="80" color="0x444444" translation="[0, 380]">
-            <Label text="CANCELAR" translation="[55, 25]" font="font:SmallBoldSystemFont" />
+        <!-- Animated 3D Borders -->
+        <Rectangle id="border1" width="600" height="300" color="0x00000000" translation="[-300, -50]">
+            <Rectangle width="600" height="4" color="0xff007f" translation="[0, 0]" />
+            <Rectangle width="600" height="4" color="0x007fff" translation="[0, 296]" />
+            <Rectangle width="4" height="300" color="0xff007f" translation="[0, 0]" />
+            <Rectangle width="4" height="300" color="0x007fff" translation="[596, 0]" />
         </Rectangle>
     </Group>
 
-    <!-- Player de Vídeo (Oculto inicialmente) -->
+    <!-- Loading Animation -->
+    <Group id="loadingGroup" translation="[960, 800]" visible="true">
+        <Rectangle id="loadingBarBg" width="400" height="10" color="0x333333" translation="[-200, 0]" />
+        <Rectangle id="loadingBar" width="0" height="10" color="0xff007f" translation="[-200, 0]" />
+        <Label id="loadingText" text="CARREGANDO..." font="font:SmallSystemFont" color="0x888888" translation="[-80, 30]" />
+    </Group>
+
+    <!-- Login Form (Initially Hidden) -->
+    <Group id="loginForm" translation="[710, 500]" visible="false">
+        <Label text="USUÁRIO" translation="[0, 0]" font="font:SmallBoldSystemFont" color="0x888888" />
+        <Rectangle id="inputUser" width="500" height="60" color="0x222222" translation="[0, 30]" focusable="true" />
+        
+        <Label text="SENHA" translation="[0, 120]" font="font:SmallBoldSystemFont" color="0x888888" />
+        <Rectangle id="inputPass" width="500" height="60" color="0x222222" translation="[0, 150]" focusable="true" />
+        
+        <Label text="URL IPTV (HOST)" translation="[0, 240]" font="font:SmallBoldSystemFont" color="0x888888" />
+        <Rectangle id="inputHost" width="500" height="60" color="0x222222" translation="[0, 270]" focusable="true" />
+        
+        <!-- Buttons -->
+        <Group id="buttonGroup" translation="[0, 380]">
+            <Rectangle id="btnCancel" width="240" height="80" color="0x444444" translation="[0, 0]" focusable="true">
+                <Label text="CANCELAR" translation="[60, 25]" font="font:SmallBoldSystemFont" />
+            </Rectangle>
+            <Rectangle id="btnContinue" width="240" height="80" color="0xff007f" translation="[260, 0]" focusable="true">
+                <Label text="CONTINUAR" translation="[50, 25]" font="font:SmallBoldSystemFont" />
+            </Rectangle>
+        </Group>
+    </Group>
+
+    <!-- Video Player -->
     <Video id="videoPlayer" width="1920" height="1080" visible="false" />
   </children>
 

@@ -2,9 +2,9 @@
 
 # Configurações da sua Roku TV
 # Mude o IP para o IP que aparece na sua TV
-ROKU_IP="192.168.1.100" 
+ROKU_IP="192.168.1.4" 
 USER="rokudev"
-PASS="1234" # Senha que você definiu no modo desenvolvedor
+PASS="thayson" # Senha que você definiu no modo desenvolvedor
 
 echo "🚀 Compilando Thayson & Thayla IPTV para Roku..."
 

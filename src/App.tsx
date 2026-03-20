@@ -4,9 +4,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoadingScreen } from './components/LoadingScreen';
 import { LoginScreen } from './components/LoginScreen';
 import { Dashboard } from './components/Dashboard';
+import { RemotePanel } from './components/RemotePanel';
 import { iptvService, XtreamConfig } from './services/iptvService';
 
 export default function App() {
@@ -52,10 +54,19 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-dark text-white">
-      {appState === 'loading' && <LoadingScreen onComplete={handleLoadingComplete} />}
-      {appState === 'login' && <LoginScreen onLogin={handleLogin} />}
-      {appState === 'dashboard' && <Dashboard onLogout={handleLogout} />}
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-bg-dark text-white">
+        <Routes>
+          <Route path="/remote" element={<RemotePanel />} />
+          <Route path="/" element={
+            <>
+              {appState === 'loading' && <LoadingScreen onComplete={handleLoadingComplete} />}
+              {appState === 'login' && <LoginScreen onLogin={handleLogin} />}
+              {appState === 'dashboard' && <Dashboard onLogout={handleLogout} />}
+            </>
+          } />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
