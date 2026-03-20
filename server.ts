@@ -35,11 +35,29 @@ async function startServer() {
     }
   });
 
-  // API para o Painel Remoto (Simulado para este exemplo)
-  app.post('/api/verify-code', (req, res) => {
-    const { code, playlist } = req.body;
-    console.log(`Recebido playlist para código ${code}:`, playlist);
+  // Armazenamento temporário de conexões (em memória para este exemplo)
+  const tvConnections = new Map();
+
+  app.post('/api/remote-connect', (req, res) => {
+    const { code, host, user, pass } = req.body;
+    if (!code || !host || !user || !pass) return res.status(400).send('All fields are required');
+    
+    // Armazena os dados para o código
+    tvConnections.set(code, { host, user, pass, timestamp: Date.now() });
+    console.log(`🚀 TV Conectada via código ${code}`);
     res.json({ success: true });
+  });
+
+  app.get('/api/check-connection/:code', (req, res) => {
+    const { code } = req.params;
+    const connection = tvConnections.get(code);
+    if (connection) {
+      // Limpa após ler (opcional, dependendo da lógica desejada)
+      // tvConnections.delete(code);
+      res.json({ success: true, ...connection });
+    } else {
+      res.json({ success: false });
+    }
   });
 
   // Configuração do Vite para Desenvolvimento

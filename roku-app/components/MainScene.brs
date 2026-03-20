@@ -24,11 +24,18 @@ sub init()
     m.categoryList = m.top.findNode("categoryList")
     m.streamList = m.top.findNode("streamList")
     
+    m.tvCodeLabel = m.top.findNode("tvCode")
+    m.remoteUrlLabel = m.top.findNode("remoteUrl")
+    
+    ' Gerar código aleatório
+    m.tvCode = generateTvCode()
+    m.tvCodeLabel.text = m.tvCode
+    
     m.top.setFocus(true)
     
     ' Initial Loading
     m.loadingTimer = m.top.createChild("Timer")
-    m.loadingTimer.duration = 0.02
+    m.loadingTimer.duration = 0.05
     m.loadingTimer.repeat = true
     m.loadingTimer.observeField("fire", "updateLoading")
     m.loadingTimer.control = "start"
@@ -43,6 +50,38 @@ sub init()
     m.keyboard.observeField("text", "onKeyboardTextChange")
     m.categoryList.observeField("itemFocused", "onCategoryFocused")
     m.streamList.observeField("itemSelected", "onStreamSelected")
+    
+    ' Polling para conexão remota
+    m.remoteTimer = m.top.createChild("Timer")
+    m.remoteTimer.duration = 3.0
+    m.remoteTimer.repeat = true
+    m.remoteTimer.observeField("fire", "checkRemoteConnection")
+    m.remoteTimer.control = "start"
+end sub
+
+sub checkRemoteConnection()
+    if m.isDashboardActive or m.isConnecting return
+    
+    url = "https://ais-dev-44sczwewnlzohqzxwxukah-131905852071.us-east5.run.app/api/check-connection/" + m.tvCode
+    m.remoteTransfer = CreateObject("roUrlTransfer")
+    m.remoteTransfer.SetUrl(url)
+    m.remoteTransfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
+    m.remoteTransfer.InitClientCertificates()
+    
+    response = m.remoteTransfer.GetToString()
+    if response <> ""
+        json = ParseJson(response)
+        if json <> invalid and json.success = true
+            m.remoteTimer.control = "stop"
+            m.valHost.text = json.host
+            m.valUser.text = json.user
+            m.valPass.text = json.pass
+            m.valHost.color = "0xffffff"
+            m.valUser.color = "0xffffff"
+            m.valPass.color = "0xffffff"
+            startConnectionAnimation()
+        end if
+    end if
 end sub
 
 sub updateLoading()
@@ -273,3 +312,11 @@ sub playStream(streamId)
     m.videoPlayer.setFocus(true)
     m.videoPlayer.control = "play"
 end sub
+
+function generateTvCode() as String
+    code = ""
+    for i = 1 to 6
+        code = code + (Rnd(10) - 1).ToStr()
+    end for
+    return code
+end function

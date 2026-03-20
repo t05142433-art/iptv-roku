@@ -15,7 +15,7 @@
     </Group>
 
     <!-- Container Principal do Login -->
-    <Group id="loginContainer" translation="[200, 400]" visible="false">
+    <Group id="loginContainer" translation="[200, 350]" visible="false">
         <!-- Área de Inputs (Esquerda) -->
         <Group id="inputArea" translation="[0, 0]">
             <Label text="USUÁRIO" translation="[0, 0]" font="font:SmallBoldSystemFont" color="0xff007f" />
@@ -40,8 +40,19 @@
             </Group>
         </Group>
 
-        <!-- Teclado Nativo (Direita) -->
-        <Keyboard id="keyboard" translation="[600, 0]" visible="false" />
+        <!-- Seção de Conexão Remota (Direita) -->
+        <Group id="remoteArea" translation="[700, 0]">
+            <Rectangle width="400" height="300" color="0x111111" opacity="0.8" />
+            <Label text="CONECTAR PELO CELULAR" translation="[40, 30]" font="font:SmallBoldSystemFont" color="0x007fff" />
+            <Label text="Acesse o link abaixo e digite o código:" translation="[40, 80]" font="font:SmallSystemFont" color="0x888888" width="320" wrap="true" />
+            <Label id="remoteUrl" text="thayson-iptv.web.app/remote" translation="[40, 140]" font="font:SmallSystemFont" color="0xffffff" />
+            
+            <Label text="CÓDIGO DA TV:" translation="[40, 200]" font="font:SmallBoldSystemFont" color="0xff007f" />
+            <Label id="tvCode" text="------" translation="[40, 240]" font="font:LargeBoldSystemFont" color="0xffffff" />
+        </Group>
+
+        <!-- Teclado Nativo (Fica oculto até ser focado) -->
+        <Keyboard id="keyboard" translation="[600, 100]" visible="false" />
     </Group>
 
     <!-- Animação de Conexão 3D -->

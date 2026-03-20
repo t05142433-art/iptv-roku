@@ -215,24 +215,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
   return (
     <div className={`flex h-screen bg-black overflow-hidden ${theme === 'blue' ? '[--color-primary:#007fff]' : theme === 'pink' ? '[--color-secondary:#ff007f]' : ''}`}>
-      {/* Background Animated Gradients */}
+      {/* Background Optimized */}
       <div className="absolute inset-0 overflow-hidden -z-0 pointer-events-none">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1]
-          }}
-          transition={{ duration: 12, repeat: Infinity }}
-          className="absolute -top-[10%] -left-[5%] w-[50%] h-[50%] bg-[#ff007f]/20 blur-[150px] rounded-full"
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.1, 0.2, 0.1]
-          }}
-          transition={{ duration: 15, repeat: Infinity }}
-          className="absolute -bottom-[10%] -right-[5%] w-[50%] h-[50%] bg-[#007fff]/20 blur-[150px] rounded-full"
-        />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#ff007f]/5 via-black to-[#007fff]/5" />
       </div>
 
       {/* Sidebar Navigation */}
